@@ -9,11 +9,11 @@ metadata:
     prometheus.io/scrape: "true"
   labels:
     application: "node-exporter"
-    role: "node-exporter"
+    role: "metrics"
 spec:
   selector:
     application: "node-exporter"
-    role: "node-exporter"
+    role: "metrics"
   ports:
     - protocol: "TCP"
       name: "scrape"
