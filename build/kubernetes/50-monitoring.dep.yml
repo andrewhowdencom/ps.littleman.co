@@ -31,7 +31,7 @@ spec:
           name: "etc-prometheus"
       containers:
       - name: "prometheus"
-        image: "quay.io/coreos/prometheus:0.20.0" # Todo: Update this
+        image: "prom/prometheus:0.20.0"
         imagePullPolicy: "IfNotPresent"
         args:
           - '-storage.local.retention=6h'
