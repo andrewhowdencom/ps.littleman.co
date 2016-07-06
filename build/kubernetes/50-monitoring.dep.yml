@@ -37,6 +37,7 @@ spec:
           - '-storage.local.retention=6h'
           - '-storage.local.memory-chunks=500000'
           - '-config.file=/etc/prometheus/prometheus.yml'
+          - '-alertmanager.url=http://alertmanager.ps-littleman-co.svc.cluster.local:9093'
         ports:
         - containerPort: 9090
           protocol: "TCP"

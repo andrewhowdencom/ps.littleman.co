@@ -25,38 +25,25 @@ spec:
         application: "alertmanager"
         role: "alertmanager"
     spec:
-      # volumes:
-      # - name: "alertmanager-etc-conf-d"
-      # configMap:
-      #   name: "alertmanager-etc-conf-d"
-      # - name: "alertmanager-data"
-      #   hostPath:
-      #     path: /data/alertmanager/
+      volumes:
+      - name: "etc-alertmanager"
+        configMap:
+          name: "etc-alertmanager"
       containers:
       - name: "alertmanager"
-        # env:
-        # - name: "FOO"
-        #   value: "BAR"
         image: "prom/alertmanager:0.2.1" # Todo: Update this
         imagePullPolicy: "IfNotPresent"
-        # args:
-        #   - "command"
-        #   - "line" 
-        #   - "arguments"
         ports:
         - containerPort: 9093
           protocol: "TCP"
           name: "http"
-        # volumeMounts:
-        # - name: "alertmanager-etc-conf-d"
-        #   readOnly: true
-        #   mountPath: "/etc/alertmanager/conf.d"
-        # - name: "alertmanager-data
-        #   readOnly: false
-        #   mountPath: "/data"
+        volumeMounts:
+        - name: "etc-alertmanager"
+          readOnly: true
+          mountPath: "/etc/alertmanager"
         livenessProbe:
           tcpSocket:
-            port: 9093          
+            port: 9093
           initialDelaySeconds: 5
           timeoutSeconds: 1
         readinessProbe:
@@ -65,4 +52,4 @@ spec:
           initialDelaySeconds: 5
           timeoutSeconds: 1
       restartPolicy: "Always"
-      securityContext: {} 
+      securityContext: {}

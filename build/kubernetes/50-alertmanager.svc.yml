@@ -11,6 +11,7 @@ metadata:
     application: "alertmanager"
     role: "alertmanager"
 spec:
+  type: "ClusterIP"
   selector:
     application: "alertmanager"
     role: "alertmanager"
@@ -18,7 +19,3 @@ spec:
     - protocol: "TCP"
       name: "http"
       port: 9093
-    # - protocol: "TCP"
-    #   name: "another-http"
-    #   port: 30http
-  type: "NodePort"
