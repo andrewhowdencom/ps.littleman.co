@@ -7,6 +7,8 @@ metadata:
   namespace: "ps-littleman-co"
 data:
   prometheus.yml: |-
+    rule_files:
+      - /etc/prometheus/rules.yml
     global:
       scrape_interval: 15s
     # A scrape configuration for running Prometheus on a Kubernetes cluster.
@@ -168,3 +170,12 @@ data:
       - source_labels: [__meta_kubernetes_pod_name]
         action: replace
         target_label: kubernetes_pod_name
+  rules.yml: |-
+    ALERT CpuHigh
+      IF 100 - (avg by (instance) (irate(node_cpu{mode="idle"}[5m])) * 100) > 10
+      FOR 1m
+      LABELS { severity = "low" }
+      ANNOTATIONS {
+        summary = "Instance {{ $labels.instance }} CPU high",
+        description = "This is just sample text. I don't know how any of this works yet"
+      }
