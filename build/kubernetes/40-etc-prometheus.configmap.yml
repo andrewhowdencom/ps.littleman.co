@@ -139,6 +139,44 @@ data:
       - source_labels: [__meta_kubernetes_service_name]
         target_label: kubernetes_name
 
+    # Configuration for probing external services via the Blackbox Exporter
+    #
+    # The relabelling allows the required parameters to be supplied by
+    # the pod via the following annotations:
+    #
+    # * `prometheus.io/blackbox`: "true"
+    # * `prometheus.io/target`: "prometheus.io"
+    # * `prometheus.io/module`: "http_2xx"
+    - job_name: 'blackbox'
+
+      metrics_path: '/probe'
+
+      kubernetes_sd_configs:
+      - api_servers:
+        - 'https://kubernetes.default.svc'
+        in_cluster: true
+
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_role, __meta_kubernetes_pod_annotation_prometheus_io_blackbox]
+        action: keep
+        regex: pod;true
+      - source_label: [__meta_kubernetes_pod_annotation_prometheus_io_target]
+        target_label: __param_target
+      - source_labels: [__meta_kubernetes_pod_annotation_promethus_io_module]
+      - target_label: __param_module
+      - target_label: __address__
+        replacement: blackbox
+      - source_labels: [__param_target]
+        target_label: target
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - source_labels: [__meta_kubernetes_role]
+        target_label: kubernetes_role
+      - source_labels: [__meta_kubernetes_service_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+
     # Example scrape config for pods
     #
     # The relabeling allows the actual pod scrape endpoint to be configured via the
