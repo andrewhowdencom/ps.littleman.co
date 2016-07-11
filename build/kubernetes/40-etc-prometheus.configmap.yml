@@ -160,7 +160,7 @@ data:
       - source_labels: [__meta_kubernetes_role, __meta_kubernetes_pod_annotation_prometheus_io_blackbox]
         action: keep
         regex: pod;true
-      - source_label: [__meta_kubernetes_pod_annotation_prometheus_io_target]
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_target]
         target_label: __param_target
       - source_labels: [__meta_kubernetes_pod_annotation_promethus_io_module]
       - target_label: __param_module
